@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings — CineBook{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center" style="margin-bottom: 1.5rem;">
+  <div>
+    <h1>My Bookings</h1>
+    <p>All tickets booked by {{ user.username }}</p>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-gold btn-sm">Browse Movies</a>
+</div>
+
+{% if bookings %}
+
+  <!-- Summary -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+    <div class="card" style="text-align: center;">
+      <div style="font-size: 2rem; color: var(--gold); font-weight: bold;">{{ bookings.count }}</div>
+      <div class="text-muted" style="font-size: 0.85rem;">Total Bookings</div>
+    </div>
+    <div class="card" style="text-align: center;">
+      <div style="font-size: 2rem; color: var(--green); font-weight: bold;">
+        {% with total_seats=0 %}
+          {% for b in bookings %}{{ b.seats_booked }}{% if not forloop.last %}+{% endif %}{% endfor %}
+        {% endwith %}
+      </div>
+      <div class="text-muted" style="font-size: 0.85rem;">Seats Booked</div>
+    </div>
+  </div>
+
+  <!-- Booking Cards -->
+  {% for booking in bookings %}
+  <div class="card" style="margin-bottom: 1rem; border-left: 4px solid var(--gold);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+
+      <!-- Left: Movie & Show Info -->
+      <div style="flex: 1; min-width: 220px;">
+        <h3 style="color: var(--gold); margin-bottom: 0.3rem; font-size: 1.1rem;">
+          🎬 {{ booking.show.movie.title }}
+        </h3>
+        <div class="text-muted" style="font-size: 0.9rem; margin-bottom: 0.2rem;">
+          📅 {{ booking.show.show_time|date:"D, d M Y" }} &nbsp;|&nbsp; 🕐 {{ booking.show.show_time|date:"g:i A" }}
+        </div>
+        <div class="text-muted" style="font-size: 0.85rem;">
+          Booked on: {{ booking.booked_at|date:"d M Y, g:i A" }}
+        </div>
+      </div>
+
+      <!-- Right: Seats & Price -->
+      <div style="text-align: right; min-width: 120px;">
+        <div style="font-size: 1.5rem; color: var(--text); font-weight: bold;">
+          {{ booking.seats_booked }} 🎟
+        </div>
+        <div style="color: var(--gold); font-size: 1rem; font-weight: bold;">
+          ₹{{ booking.total_price }}
+        </div>
+        <div class="text-muted" style="font-size: 0.78rem;">@ ₹200/seat</div>
+      </div>
+
+    </div>
+
+    <hr>
+
+    <!-- Actions -->
+    <div class="flex justify-between items-center">
+      <a href="{% url 'movie_detail' booking.show.movie.id %}" class="btn btn-outline btn-sm">
+        View Movie
+      </a>
+      <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-sm" style="background: #2e0d0f; color: var(--red); border: 1px solid var(--red);">
+        Cancel Booking
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+
+{% else %}
+  <!-- Empty State -->
+  <div style="text-align: center; padding: 5rem 2rem;">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">🎟</div>
+    <h2>No Bookings Yet</h2>
+    <p>You haven't booked any tickets. Browse movies and book your first show!</p>
+    <a href="{% url 'home' %}" class="btn btn-gold mt-2">Browse Movies</a>
+  </div>
+{% endif %}
+
+{% endblock %}

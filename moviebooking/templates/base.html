@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CineBook{% endblock %}</title>
+  <style>
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #13131a;
+      --card:      #1c1c28;
+      --border:    #2a2a3d;
+      --gold:      #f5c518;
+      --gold-dim:  #c9a114;
+      --red:       #e63946;
+      --green:     #2dc653;
+      --text:      #e8e8f0;
+      --muted:     #8888aa;
+      --radius:    10px;
+      --font:      'Georgia', serif;
+      --mono:      'Courier New', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .nav-brand span { color: var(--red); }
+
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .btn-nav {
+      background: var(--gold);
+      color: #000 !important;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.2s !important;
+    }
+
+    .btn-nav:hover { background: var(--gold-dim) !important; }
+
+    /* ── MAIN CONTENT ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── MESSAGES / ALERTS ── */
+    .messages { list-style: none; margin-bottom: 1.5rem; }
+
+    .messages li {
+      padding: 0.85rem 1.2rem;
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      border-left: 4px solid;
+    }
+
+    .messages .success { background: #0d2e18; border-color: var(--green); color: #6ee89b; }
+    .messages .error   { background: #2e0d0f; border-color: var(--red);   color: #f08080; }
+    .messages .warning { background: #2e2200; border-color: var(--gold);  color: var(--gold); }
+    .messages .info    { background: #0d1a2e; border-color: #4a90d9;      color: #7ab3e8; }
+
+    /* ── TYPOGRAPHY ── */
+    h1 { font-size: 2rem; color: var(--gold); margin-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; color: var(--text); margin-bottom: 0.5rem; }
+    h3 { font-size: 1.2rem; color: var(--text); }
+
+    p { color: var(--muted); margin-bottom: 0.75rem; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn:hover  { opacity: 0.88; }
+
+    .btn-gold    { background: var(--gold);    color: #000;       font-weight: bold; }
+    .btn-red     { background: var(--red);     color: #fff; }
+    .btn-green   { background: var(--green);   color: #000;       font-weight: bold; }
+    .btn-outline {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); opacity: 1; }
+
+    .btn-sm { padding: 0.35rem 0.85rem; font-size: 0.85rem; }
+
+    /* ── FORMS ── */
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .form-input,
+    input[type="text"], input[type="email"],
+    input[type="password"], input[type="number"],
+    select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.7rem 1rem;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus,
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .errorlist {
+      list-style: none;
+      color: var(--red);
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+
+    /* ── STARS ── */
+    .stars { color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; }
+    .stars-muted { color: var(--border); }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .badge-genre  { background: #1a1a35; color: #8888ee; border: 1px solid #3333aa; }
+    .badge-red    { background: #2e0d0f; color: var(--red); }
+    .badge-green  { background: #0d2e18; color: var(--green); }
+    .badge-gold   { background: #2e2200; color: var(--gold); }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    /* ── UTILITY ── */
+    .flex         { display: flex; }
+    .items-center { align-items: center; }
+    .gap-1        { gap: 0.5rem; }
+    .gap-2        { gap: 1rem; }
+    .justify-between { justify-content: space-between; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .text-muted { color: var(--muted); font-size: 0.9rem; }
+    .text-gold  { color: var(--gold); }
+    .text-red   { color: var(--red); }
+    .text-center { text-align: center; }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 0.7rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 1rem;
+    }
+
+    .search-bar input:focus { outline: none; border-color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="{% url 'home' %}" class="nav-brand">🎬 Cine<span>Book</span></a>
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Movies</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'my_bookings' %}">My Bookings</a>
+      <span style="color:var(--muted); font-size:0.85rem;">👤 {{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-sm">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}" class="btn-nav">Sign Up</a>
+    {% endif %}
+  </div>
+</nav>
+
+<div class="container">
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</div>
+
+<footer>
+  <p>🎬 CineBook — Your Movie Ticket Booking Platform</p>
+</footer>
+
+</body>
+</html>

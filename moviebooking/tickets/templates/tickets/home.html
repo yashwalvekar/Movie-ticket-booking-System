@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}CineBook — All Movies{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div style="text-align:center; padding: 3rem 0 2rem;">
+  <h1 style="font-size: 2.8rem; margin-bottom: 0.5rem;">Now Showing</h1>
+  <p style="font-size: 1.1rem;">Book tickets for the latest blockbusters</p>
+</div>
+
+<!-- Search Bar -->
+<form method="get" action="{% url 'home' %}" class="search-bar">
+  <input type="text" name="q" value="{{ query }}" placeholder="🔍  Search movies by title...">
+  <button type="submit" class="btn btn-gold">Search</button>
+  {% if query %}
+    <a href="{% url 'home' %}" class="btn btn-outline">Clear</a>
+  {% endif %}
+</form>
+
+{% if query %}
+  <p class="text-muted mb-2">
+    Showing results for "<strong style="color:var(--gold)">{{ query }}</strong>" — {{ movies.count }} found
+  </p>
+{% endif %}
+
+<!-- Movie Grid -->
+{% if movies %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+    {% for movie in movies %}
+    <div class="card" style="display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s;"
+         onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='#f5c518';"
+         onmouseout="this.style.transform='translateY(0)';this.style.borderColor='#2a2a3d';">
+
+      <!-- Movie Poster -->
+      <div style="
+        height: 200px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #1c1c35 0%, #2a1c3d 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        position: relative;
+      ">
+        {% if movie.poster %}
+          <img src="{{ movie.poster.url }}"
+               alt="{{ movie.title }} poster"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        {% else %}
+          {# Fallback emoji when no poster is uploaded #}
+          {% if movie.genre == 'Action' %}⚔️
+          {% elif movie.genre == 'Comedy' %}😂
+          {% elif movie.genre == 'Horror' %}👻
+          {% elif movie.genre == 'Romance' %}💕
+          {% elif movie.genre == 'Sci-Fi' %}🚀
+          {% elif movie.genre == 'Thriller' %}🕵️
+          {% elif movie.genre == 'Drama' %}🎭
+          {% elif movie.genre == 'Animation' %}✨
+          {% elif movie.genre == 'Documentary' %}🎥
+          {% else %}🎬{% endif %}
+        {% endif %}
+      </div>
+
+      <div style="flex: 1;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text);">{{ movie.title }}</h3>
+
+        <div class="flex gap-1 items-center" style="margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <span class="badge badge-genre">{{ movie.genre }}</span>
+          <span class="text-muted">{{ movie.duration }} min</span>
+          {% with avg=movie.average_rating %}
+            {% if avg %}
+              <span style="color: var(--gold); font-size: 0.85rem;">★ {{ avg }}</span>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <p style="font-size: 0.9rem; color: var(--muted); display: -webkit-box;
+           -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+          {{ movie.description }}
+        </p>
+      </div>
+
+      <div class="mt-2">
+        <a href="{% url 'movie_detail' movie.id %}" class="btn btn-gold" style="width: 100%; text-align: center;">
+          View Details & Book
+        </a>
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+  <!-- Empty State -->
+  <div style="text-align: center; padding: 5rem 2rem;">
+    <div style="font-size: 4rem; margin-bottom: 1rem;">🎭</div>
+    <h2>No Movies Found</h2>
+    <p>
+      {% if query %}
+        No movies match your search. Try a different keyword.
+      {% else %}
+        No movies have been added yet. Check back soon!
+      {% endif %}
+    </p>
+    {% if query %}
+      <a href="{% url 'home' %}" class="btn btn-outline mt-2">Browse All Movies</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}

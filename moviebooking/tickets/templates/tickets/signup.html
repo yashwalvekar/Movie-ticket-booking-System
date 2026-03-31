@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up — CineBook{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 460px; margin: 3rem auto;">
+
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎬</div>
+    <h1>Create Account</h1>
+    <p>Join CineBook and start booking tickets</p>
+  </div>
+
+  <div class="card">
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <ul class="errorlist">
+              {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          {% if field.help_text %}
+            <div style="font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem;">{{ field.help_text }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+        Create Account
+      </button>
+    </form>
+  </div>
+
+  <p style="text-align: center; margin-top: 1.25rem; color: var(--muted);">
+    Already have an account?
+    <a href="{% url 'login' %}" style="color: var(--gold); text-decoration: none;">Login here</a>
+  </p>
+
+</div>
+
+{% endblock %}

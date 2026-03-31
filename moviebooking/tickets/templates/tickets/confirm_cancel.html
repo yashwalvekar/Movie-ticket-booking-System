@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Booking — CineBook{% endblock %}
+
+{% block content %}
+
+<div style="max-width: 480px; margin: 3rem auto; text-align: center;">
+
+  <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+  <h1 style="color: var(--red); margin-bottom: 0.5rem;">Cancel Booking?</h1>
+  <p>This action cannot be undone.</p>
+
+  <div class="card" style="margin: 1.5rem 0; text-align: left; border-color: var(--red);">
+    <div style="margin-bottom: 0.5rem;">
+      <span class="text-muted" style="font-size: 0.8rem;">MOVIE</span>
+      <div style="color: var(--gold); font-size: 1.1rem; font-weight: bold;">{{ booking.show.movie.title }}</div>
+    </div>
+    <div style="margin-bottom: 0.5rem;">
+      <span class="text-muted" style="font-size: 0.8rem;">SHOWTIME</span>
+      <div style="color: var(--text);">{{ booking.show.show_time|date:"D, d M Y — g:i A" }}</div>
+    </div>
+    <div style="margin-bottom: 0.5rem;">
+      <span class="text-muted" style="font-size: 0.8rem;">SEATS BOOKED</span>
+      <div style="color: var(--text);">{{ booking.seats_booked }} seat(s)</div>
+    </div>
+    <div>
+      <span class="text-muted" style="font-size: 0.8rem;">AMOUNT PAID</span>
+      <div style="color: var(--gold); font-weight: bold;">₹{{ booking.total_price }}</div>
+    </div>
+  </div>
+
+  <div class="flex gap-2" style="justify-content: center;">
+    <a href="{% url 'my_bookings' %}" class="btn btn-outline">Keep Booking</a>
+    <form method="post" style="display: inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-red">Yes, Cancel It</button>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,176 @@
+[
+  {
+    "model": "tickets.movie",
+    "pk": 1,
+    "fields": {
+      "title": "Galactic Odyssey",
+      "description": "A crew of astronauts embarks on a perilous journey beyond the known universe, discovering ancient civilizations and facing impossible choices that will determine the fate of humanity. A breathtaking space epic filled with stunning visuals and emotional depth.",
+      "duration": 148,
+      "genre": "Sci-Fi",
+      "release_date": "2025-01-15"
+    }
+  },
+  {
+    "model": "tickets.movie",
+    "pk": 2,
+    "fields": {
+      "title": "The Last Detective",
+      "description": "A retired detective is pulled back into action when a series of mysterious disappearances shakes a quiet coastal town. As secrets unravel, he discovers the town's darkest truth has been hiding in plain sight for decades.",
+      "duration": 122,
+      "genre": "Thriller",
+      "release_date": "2025-02-08"
+    }
+  },
+  {
+    "model": "tickets.movie",
+    "pk": 3,
+    "fields": {
+      "title": "Monsoon Wedding Bells",
+      "description": "A heartwarming romantic comedy set during a lavish Indian wedding. Two strangers are accidentally seated together and spend the entire celebration falling in love amidst family drama, missing caterers, and a surprise rainstorm.",
+      "duration": 110,
+      "genre": "Romance",
+      "release_date": "2025-03-14"
+    }
+  },
+  {
+    "model": "tickets.movie",
+    "pk": 4,
+    "fields": {
+      "title": "Iron Fist: Reborn",
+      "description": "After being betrayed by his own team, a special forces operative goes off the grid to expose a global conspiracy. Featuring jaw-dropping action sequences filmed across six countries and a twist nobody saw coming.",
+      "duration": 135,
+      "genre": "Action",
+      "release_date": "2025-04-01"
+    }
+  },
+  {
+    "model": "tickets.movie",
+    "pk": 5,
+    "fields": {
+      "title": "Laugh Track",
+      "description": "A failed stand-up comedian accidentally goes viral after a disastrous open-mic night. Now suddenly famous for all the wrong reasons, he must decide whether to embrace the chaos or fight for the act he actually believes in.",
+      "duration": 98,
+      "genre": "Comedy",
+      "release_date": "2025-05-20"
+    }
+  },
+  {
+    "model": "tickets.movie",
+    "pk": 6,
+    "fields": {
+      "title": "Hollow House",
+      "description": "A family moves into a centuries-old mansion only to realise they are not its only residents. As paranormal events escalate, they uncover the tragic story of the original inhabitants — and why they never left.",
+      "duration": 105,
+      "genre": "Horror",
+      "release_date": "2025-06-13"
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 1,
+    "fields": {
+      "movie": 1,
+      "show_time": "2026-04-05T10:30:00",
+      "total_seats": 120
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 2,
+    "fields": {
+      "movie": 1,
+      "show_time": "2026-04-05T14:00:00",
+      "total_seats": 120
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 3,
+    "fields": {
+      "movie": 1,
+      "show_time": "2026-04-05T18:30:00",
+      "total_seats": 100
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 4,
+    "fields": {
+      "movie": 2,
+      "show_time": "2026-04-05T11:00:00",
+      "total_seats": 90
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 5,
+    "fields": {
+      "movie": 2,
+      "show_time": "2026-04-05T16:00:00",
+      "total_seats": 90
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 6,
+    "fields": {
+      "movie": 3,
+      "show_time": "2026-04-06T13:00:00",
+      "total_seats": 80
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 7,
+    "fields": {
+      "movie": 3,
+      "show_time": "2026-04-06T19:00:00",
+      "total_seats": 80
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 8,
+    "fields": {
+      "movie": 4,
+      "show_time": "2026-04-07T12:00:00",
+      "total_seats": 150
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 9,
+    "fields": {
+      "movie": 4,
+      "show_time": "2026-04-07T20:00:00",
+      "total_seats": 150
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 10,
+    "fields": {
+      "movie": 5,
+      "show_time": "2026-04-08T15:00:00",
+      "total_seats": 70
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 11,
+    "fields": {
+      "movie": 6,
+      "show_time": "2026-04-08T21:00:00",
+      "total_seats": 60
+    }
+  },
+  {
+    "model": "tickets.show",
+    "pk": 12,
+    "fields": {
+      "movie": 6,
+      "show_time": "2026-04-09T22:00:00",
+      "total_seats": 60
+    }
+  }
+]

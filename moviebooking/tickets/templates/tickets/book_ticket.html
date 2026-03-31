@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Tickets — {{ show.movie.title }}{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'movie_detail' show.movie.id %}" class="btn btn-outline btn-sm mb-2">← Back to Movie</a>
+
+<div style="max-width: 520px; margin: 2rem auto;">
+
+  <h1 style="margin-bottom: 0.25rem;">Book Tickets</h1>
+  <p>{{ show.movie.title }}</p>
+
+  <!-- Show Info Card -->
+  <div class="card" style="margin-bottom: 1.5rem; border-color: var(--gold);">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div>
+        <div class="text-muted" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Date</div>
+        <div style="color: var(--text); font-size: 1rem; margin-top: 0.2rem;">
+          {{ show.show_time|date:"D, d M Y" }}
+        </div>
+      </div>
+      <div>
+        <div class="text-muted" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Time</div>
+        <div style="color: var(--gold); font-size: 1.1rem; font-weight: bold; margin-top: 0.2rem;">
+          {{ show.show_time|date:"g:i A" }}
+        </div>
+      </div>
+      <div>
+        <div class="text-muted" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Available Seats</div>
+        <div style="color: var(--green); font-size: 1rem; margin-top: 0.2rem;">{{ available }} seats</div>
+      </div>
+      <div>
+        <div class="text-muted" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Price Per Seat</div>
+        <div style="color: var(--text); font-size: 1rem; margin-top: 0.2rem;">₹200</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Form -->
+  <div class="card">
+    <h2 style="margin-bottom: 1.25rem; font-size: 1.2rem;">Select Seats</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.seats_booked.id_for_label }}">Number of Seats (max 10)</label>
+        {{ form.seats_booked }}
+        {% if form.seats_booked.errors %}
+          <ul class="errorlist">
+            {% for error in form.seats_booked.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <!-- Dynamic Price Calculator -->
+      <div id="price-display" style="
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.25rem;
+        display: none;
+      ">
+        <div class="flex justify-between" style="margin-bottom: 0.4rem;">
+          <span class="text-muted">Seats × ₹200</span>
+          <span id="price-calc" style="color: var(--text);"></span>
+        </div>
+        <div class="flex justify-between" style="border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.5rem;">
+          <span style="color: var(--text); font-weight: bold;">Total</span>
+          <span id="price-total" style="color: var(--gold); font-size: 1.2rem; font-weight: bold;"></span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="width: 100%; font-size: 1rem; padding: 0.85rem;">
+        Confirm Booking
+      </button>
+    </form>
+  </div>
+
+  <p class="text-muted" style="font-size: 0.8rem; text-align: center; margin-top: 1rem;">
+    Booking as: <strong style="color: var(--text);">{{ user.username }}</strong>
+  </p>
+
+</div>
+
+<script>
+  const input = document.getElementById('id_seats_booked');
+  const display = document.getElementById('price-display');
+  const calc = document.getElementById('price-calc');
+  const total = document.getElementById('price-total');
+
+  function updatePrice() {
+    const seats = parseInt(input.value) || 0;
+    if (seats > 0) {
+      display.style.display = 'block';
+      calc.textContent = seats + ' × ₹200';
+      total.textContent = '₹' + (seats * 200).toLocaleString('en-IN');
+    } else {
+      display.style.display = 'none';
+    }
+  }
+
+  input.addEventListener('input', updatePrice);
+  updatePrice(); // Run on load if value already set
+</script>
+
+{% endblock %}

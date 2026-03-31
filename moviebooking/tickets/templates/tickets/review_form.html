@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Review — {{ movie.title }}{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'movie_detail' movie.id %}" class="btn btn-outline btn-sm mb-2">← Back to Movie</a>
+
+<div style="max-width: 520px; margin: 2rem auto;">
+
+  <h1 style="margin-bottom: 0.25rem;">{{ action }} Review</h1>
+  <p style="color: var(--gold); margin-bottom: 1.5rem;">{{ movie.title }}</p>
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Rating Field -->
+      <div class="form-group">
+        <label for="{{ form.rating.id_for_label }}">Your Rating</label>
+        {{ form.rating }}
+        {% if form.rating.errors %}
+          <ul class="errorlist">
+            {% for error in form.rating.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <!-- Star Preview -->
+      <div id="star-preview" style="font-size: 1.8rem; margin: -0.5rem 0 1rem; color: var(--border); letter-spacing: 4px;">
+        ★★★★★
+      </div>
+
+      <!-- Comment Field -->
+      <div class="form-group">
+        <label for="{{ form.comment.id_for_label }}">Your Review <span style="color: var(--muted); font-size: 0.8rem;">(optional)</span></label>
+        {{ form.comment }}
+        {% if form.comment.errors %}
+          <ul class="errorlist">
+            {% for error in form.comment.errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="width: 100%; padding: 0.85rem;">
+        {{ action }} Review
+      </button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+  const ratingSelect = document.getElementById('id_rating');
+  const starPreview = document.getElementById('star-preview');
+  const gold = '#f5c518';
+  const dim = '#2a2a3d';
+
+  function updateStars() {
+    const val = parseInt(ratingSelect.value) || 0;
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      html += `<span style="color: ${i <= val ? gold : dim}">★</span>`;
+    }
+    starPreview.innerHTML = html;
+  }
+
+  ratingSelect.addEventListener('change', updateStars);
+  updateStars(); // Run on load for edit form
+</script>
+
+{% endblock %}
